@@ -39,7 +39,7 @@ class Resnet34(nn.Module):
     super().__init__()
     self.conv1 = nn.Conv2d(input_channels, 64, kernel_size=7, stride = (2,2), padding = 3)
     self.pool = nn.MaxPool2d(kernel_size = 3, stride = 2, padding = (1,1))
-    self.conv2 = nn.Sequential(ResidualBlock(64, 64), ResidualBlock(64, 64))
+    self.conv2 = nn.Sequential(ResidualBlock(64, 64), ResidualBlock(64, 64), ResidualBlock(64, 64))
     self.conv3 = nn.Sequential(ResidualBlockwith1x1(64, 128), ResidualBlock(128, 128), ResidualBlock(128, 128), ResidualBlock(128, 128))
     self.conv4 = nn.Sequential(ResidualBlockwith1x1(128, 256), ResidualBlock(256, 256), ResidualBlock(256, 256), ResidualBlock(256, 256), ResidualBlock(256, 256), ResidualBlock(256, 256))
     self.conv5 = nn.Sequential(ResidualBlockwith1x1(256, 512), ResidualBlock(512, 512), ResidualBlock(512, 512))
