@@ -68,7 +68,7 @@ class Resnet50(nn.Module):
     #print(x.shape)
     x = self.avgpool(x)
     #print(x.shape)
-    x = F.relu(self.classifier(x))
+    x = self.classifier(x)
     #print(x.shape)
     return x
 
