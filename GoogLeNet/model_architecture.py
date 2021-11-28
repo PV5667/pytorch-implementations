@@ -48,6 +48,13 @@ class GoogLeNet(nn.Module):
         self.inception4c = Inception_Module(512, [128, 128, 256, 24, 64, 64])
         self.inception4d = Inception_Module(512, [112, 144, 288, 32, 64, 64])
         self.inception4e = Inception_Module(528, [256, 160, 320, 32, 128, 128])
+        self.maxpool2 = nn.MaxPool2d(kernel_size =3, stride = 2, padding = (1,1))
+        self.inception5a = Inception_Module(832, [256, 160, 320, 32, 128, 128])
+        self.inception5b = Inception_Module(832, [384, 192, 384, 48, 128, 128])
+        self.avgpool1 = nn.AvgPool2d(kernel_size = 7, stride = (1,1))
+        self.dropout1 = nn.Dropout2d(0.4)
+        self.flatten = nn.Flatten()
+        self.linear1 = nn.Linear(1024, 1000)
     def forward(self, x):
         x = self.conv_block1(x)
         x = self.inception3a(x)
@@ -66,6 +73,21 @@ class GoogLeNet(nn.Module):
         print(x.size())
         x = self.inception4e(x)
         print(x.size())
+        x = self.maxpool2(x)
+        print(x.size())
+        x = self.inception5a(x)
+        x = self.inception5b(x)
+        print(x.size())
+        x = self.avgpool1(x)
+        print(x.size())
+        x = self.dropout1(x)
+        print(x.size())
+        x = self.flatten(x)
+        print(x.size())
+        x = self.linear1(x)
+        print(x.size())
+
+
         
 
 
