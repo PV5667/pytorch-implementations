@@ -58,10 +58,10 @@ class GoogLeNet(nn.Module):
 
         self.pred_branch1 = nn.Sequential(nn.AvgPool2d(kernel_size = 5, stride = 3), 
                                          nn.Conv2d(512, 128, kernel_size = 3, stride = (1,1), padding = (1,1), bias = False), 
-                                         nn.ReLU(), nn.Flatten(), nn.Linear(2048, 1024), nn.Dropout2d(0.5))
+                                         nn.ReLU(), nn.Flatten(), nn.Linear(2048, 1024), nn.Dropout2d(0.7), nn.Linear(1024, 1000))
         self.pred_branch2 = nn.Sequential(nn.AvgPool2d(kernel_size = 5, stride = 3), 
                                          nn.Conv2d(528, 128, kernel_size = 3, stride = (1,1), padding = (1,1), bias = False), 
-                                         nn.ReLU(), nn.Flatten(), nn.Linear(2048, 1024), nn.Dropout2d(0.5))
+                                         nn.ReLU(), nn.Flatten(), nn.Linear(2048, 1024), nn.Dropout(0.7), nn.Linear(1024, 1000))
     def forward(self, x):
         x = self.conv_block1(x)
         x = self.inception3a(x)
@@ -96,43 +96,24 @@ class GoogLeNet(nn.Module):
         x = self.linear1(x)
         print(x.size())
 
-    def test(self, x):
-        x = self.conv_block1(x)
-        x = self.inception3a(x)
-        #print(x.size())
-        x = self.inception3b(x)
-        #print(x.size())
-        x = self.maxpool1(x)
-        print(x.size())
-        x = self.inception4a(x)
-        print(x.size())
-        # add pred branch 1 here
-        x = self.inception4b(x)
-        print(x.size())
-        x = self.inception4c(x)
-        print(x.size())
-        x = self.inception4d(x)
-        print(x.size())
-        x = self.pred_branch2(x)
-        return x
         
         
 
 
 
 #net = Inception_Module(256, [128, 128, 192, 32, 96, 64])
-'''
+
 net = GoogLeNet(3, 5)
 t = torch.randn(1, 3, 224, 224)
 print(t.size())
 net.forward(t)
-'''
+
 #print(net)
         
 
-net = GoogLeNet(3, 10)
-
-t = torch.randn(1, 3, 224, 224)
-net.test(t)
+#net = GoogLeNet(3, 10)
+#
+#t = torch.randn(1, 3, 224, 224)
+#net.test(t)
 
 
