@@ -5,6 +5,6 @@ Epic Pytorch Implementations of common ML Architectures
  - VGG16
  - GoogLeNet
 
-#Upcoming
+# Upcoming
 - Faster R-CNN
 - Fully Convolutional Network
