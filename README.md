@@ -10,6 +10,9 @@ These consist of residual blocks that allow for deeper networks (soetimes with 1
  Introduced Network in Network (NiN) modules for CNNs. Uses two auxiliary branches for predictions during training to combat gradient loss. During evaluation, only one branch is used.
 
 # Upcoming
+GoogLeNet
+- Resolve the issue around how to use certain branches for training only.
+
 Faster R-CNN
 - Need to Implement:
 - Feature Pyramid Network (hopefully actual architecture will be easy to code )
