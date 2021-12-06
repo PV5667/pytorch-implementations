@@ -20,3 +20,6 @@ Faster R-CNN
 
 Fully Convolutional Network
 - This, I feel will be important for the monocular depth perception project that I'm doing.
+- Will use this for the semantic segmentation part of the model
+
+
