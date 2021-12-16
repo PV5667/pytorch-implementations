@@ -12,6 +12,7 @@ These consist of residual blocks that allow for deeper networks (soetimes with 1
 # Upcoming
 GoogLeNet
 - Resolve the issue around how to use certain branches for training only.
+- https://stackoverflow.com/questions/67789463/how-to-discard-a-branch-after-training-a-pytorch-model
 
 Faster R-CNN
 - Need to Implement:
