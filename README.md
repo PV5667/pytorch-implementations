@@ -1,5 +1,5 @@
 # pytorch-implementations
-Epic Pytorch Implementations of common ML Architectures
+Epic PyTorch Implementations of common ML Architectures
  - ResNets
 These consist of residual blocks that allow for deeper networks (soetimes with 100+ layers) to converge well. 
  - AlexNet
