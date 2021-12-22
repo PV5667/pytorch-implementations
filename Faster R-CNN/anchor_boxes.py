@@ -107,3 +107,42 @@ def offset_from_bbox(anchors, bboxes, eps = 1e-6):
 
   offset = torch.cat([offset_xy, offset_wh], axis = 1)
   return offset
+
+
+# labelling classes, offsets onto anchor boxes
+
+def anchor_assigning(anchors, labels):
+  # assigns the classes and the offsets of the ground truth boxes (obtained from anchor matching)
+  # to their respective anchors
+  
+  batch_size, anchors = labels.shape[0], anchors.squeeze(0)
+  batch_offset, batch_mask, batch_classes = [], [], []
+  device, num_anchors = anchors.device, anchors.shape[0]
+  for i in range(batch_size):
+    label = labels[i, :, :]
+    anchors_bbox_map = anchor_bbox_match(label[:, 1:], anchors, device)
+
+    bbox_mask = ((anchors_bbox_map >= 0).float().unsqueeze(-1)).repeat(1, 4)
+
+    # class labels, bounding box tensors initialized with zeroes
+
+    classes = torch.zeros(num_anchors, dtype=torch.long, device=device)
+    bbox = torch.zeros((num_anchors, 4), dtype = torch.float32, device = device)
+
+    indices_true = torch.nonzero(anchors_bbox_map >= 0)
+    bbox_index = anchors_bbox_map[indices_true]
+    class_labels[indices_true] = label[bbox_index, 0].long
+    bbox[indices_true] = label[bbox_index, 1:]
+
+    # adding the offsets
+    offset = offset_from_bbox(anchors, bbox) * bbox_mask
+    batch_offset.append(offset.reshape(-1))
+    batch_mask.append(bbox_mask.reshape(-1))
+    batch_classes.append(classes)
+  bbox_offset = torch.stack(batch_offset)
+  bbox_mask = torch.stack(batch_mask)
+  classes = torch.stack(batch_classes)
+  return (bbox_offset, bbox_mask, classes)
+
+
+  
