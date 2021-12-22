@@ -4,7 +4,7 @@ A lot of the code for the generation of anchor boxes and the handling of anchor 
 
 Every line of these functions was methodically studied and appropriate comments were added when I found something of interest or came upon something previously unknown.
 
-I am extremely thankful to the authors of this book for making previously unintuitive concepts in the realm of computer vision refreshingly clear and for creatign an invaluable resource on practical implementations of computer vision algorithms.
+I am extremely thankful to the authors of this book for making previously unintuitive concepts in the realm of computer vision refreshingly clear and for creating an invaluable resource on practical implementations of computer vision algorithms.
 
 Attached is the citation for the book: 
 
