@@ -145,4 +145,26 @@ def anchor_assigning(anchors, labels):
   return (bbox_offset, bbox_mask, classes)
 
 
-  
+def center_to_corner(boxes):
+  cx, cy, w, h = boxes[:, 0], boxes[:, 1], boxes[:, 2], boxes[:, 3]
+  x1 = cx - 0.5 * w
+  y1 = cy - 0.5 * h
+  x2 = cx + 0.5 * w
+  y2 = cy + 0.5 * h 
+  return torch.stack((x1, y1, x2, y2), axis = -1)
+
+def offset_to_bbox(anchors, offset_preds):
+  # Takes the offsets and returns the bboxes from this
+  # first need to convert the inputted format of corners to centers
+
+  anchors = corner_to_center(anchors)
+
+  # essentially reverse the operations in the corner to centers function
+  bbox_xy = (offset_preds[:, :2] * anchors [:, 2:] / 10) + anchors[:, :2]
+  bbox_wh = torch.exp(offset_preds[:, 2:] / 5) * anchors[:, 2:]
+
+  bbox = torch.cat((bbox_xy, bbox_wh), axis = 1)
+  pred_bbox = center_to_corner(bbox)
+  return pred_bbox
+
+
