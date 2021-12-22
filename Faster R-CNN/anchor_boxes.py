@@ -184,3 +184,38 @@ def nms(box, scores, iou_threshold):
     sorted = sorted[inds + 1]
   return torch.tensor(keep, device = boxes.device)
 
+def multibox_detection(class_scores, offset_preds, anchors, nms_thresh = 0.5, pos_thresh =0.009999999)
+  # applies nms to predicting bounding boxes
+  # pos_threshold is the threshold determining if a prediction is background or not 
+
+  device, batch_size = class_scores.device, class_scores.shape[0]
+  anchors = anchors.squeeze(0)
+
+  num_classes, num_anchors = class_scores.shape[1], class_scores.shape[2]
+
+  out = []
+  for i in range(batch_size):
+    class_scores, offset_pred = class_scores[i], offset_preds[i].reshape(-1, 4)
+    conf, class_id = torch.max(class_scores[1:], 0)
+
+    pred_bbox = offset_to_bbox(anchors, offset_pred)
+    keep = nms(pred_bbox, conf, nms_thresh)
+
+    all_idx = torch.arange(num_anchors, dtype = torch.long, device = device)
+    combined = torch.cat((keep, all_idx))
+    uniques, counts = combined.unique(return_countss = True)
+    non_keep = uniques[counts == 1]
+    all_id_sorted = torch.cat((keep, non_keep))
+    class_id[non_keep] = -1 # set all non_keep elements to class = -1, or background
+    class_id = class_id[all_id_sorted]
+    conf, pred_bbox = conf[all_id_sorted], pred_bbox[all_id_sorted]
+
+    below_min_idx = (conf < pos_thresh)
+    class_id[below_min_idx] = -1
+    conf[below_min_idx] = 1 - conf[below_min_idx]
+    pred_info = torch.cat((class_id.unsqueeze(1), conf.unsqueeze(1), pred_bbox), dim = 1)
+    out.append(pred_info)
+
+  return torch.stack(out)
+
+
