@@ -168,3 +168,19 @@ def offset_to_bbox(anchors, offset_preds):
   return pred_bbox
 
 
+def nms(box, scores, iou_threshold):
+  # a list of the confidences in sorted order
+  sorted = torch.argsort(scores, dim = 1, descending = True)
+  keep = []
+  # numel returns all of the elements in a tensor
+  # as an example, a 4 x 4 tensor would have 16 elements
+  while sorted.numel() > 0: 
+    i = sorted[0]
+    keep.append(i)
+    if sorted.numel() == 1:
+      break
+    iou = find_iou(boxes[i, :].reshape(-1, 4), boxes[sorted[1:], :].reshape(-1, 4).reshape(-1))
+    inds = torch.nonzero(iou <= iou_threshold).reshape(-1)
+    sorted = sorted[inds + 1]
+  return torch.tensor(keep, device = boxes.device)
+
