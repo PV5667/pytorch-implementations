@@ -2,7 +2,7 @@
 
 
 # using resnet 50 bakckbone, will make a new class called FPN with ResNet50 and add lateral connections, etc.
-
+# To Do: add predictor heads
 
 import torchvision
 import torch 
