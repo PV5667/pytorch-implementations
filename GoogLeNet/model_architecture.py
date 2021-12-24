@@ -108,12 +108,5 @@ t = torch.randn(1, 3, 224, 224)
 print(t.size())
 net.forward(t)
 
-#print(net)
-        
-
-#net = GoogLeNet(3, 10)
-#
-#t = torch.randn(1, 3, 224, 224)
-#net.test(t)
 
 
