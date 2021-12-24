@@ -17,7 +17,10 @@ GoogLeNet
 Faster R-CNN
 - Need to Implement:
 - Feature Pyramid Network (hopefully actual architecture will be easy to code )
-- Define, use anchor boxes (This part is what I anticipate to be challenging. For some reason, anchor boxes are not really intuitive to me.) I may need to write a kind of description after reading some papers to cement my understanding.
+- Define, use anchor boxes (This part is what I anticipate to be challenging. For some reason, anchor boxes are not really intuitive to me.) 
+- I may need to write a kind of description after reading some papers to cement my understanding.
+- One big breakthrough in y understanding of anchor boxes is that they are predicting offsets to the anchor boxes rather than directly predicting the bounding box coordinates. 
+
 
 Fully Convolutional Network
 - This, I feel will be important for the monocular depth perception project that I'm doing.
