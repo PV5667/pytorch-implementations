@@ -24,5 +24,8 @@ Faster R-CNN
 Fully Convolutional Network
 - This, I feel will be important for the monocular depth perception project that I'm doing.
 - Will use this for the semantic segmentation part of the model
+- It is really interesting to see that the data is shown as images with the masks already drawn.
+- Using color codes, we just need to make labels of the images.
+
 
 
