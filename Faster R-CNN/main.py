@@ -30,5 +30,9 @@ Useful functions from the pytorch libraries in this case:
 
 
 
+implement an RPN and an Faster RCNN class --> for 4-step alternating training
 
 """
+
+
+
