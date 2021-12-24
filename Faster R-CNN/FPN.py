@@ -79,6 +79,7 @@ class ResidualBlockwith1x1(nn.Module):
     return y
 
 class Resnet50FPN(nn.Module):
+  """ Implements an FPN with ResNet50 as a backbone. Returns the feature maps m5, m4, m3, m2 in that order. """
   def __init__ (self, input_channels, output_channels):
     super().__init__()
     self.conv1 = nn.Conv2d(input_channels, 64, kernel_size=7, stride = (2,2), padding = 3)
@@ -92,9 +93,7 @@ class Resnet50FPN(nn.Module):
     self.conv_c4_1x1 = nn.Conv2d(1024, 256, kernel_size = 1, stride = (1,1), bias = False) 
     self.conv_c3_1x1 = nn.Conv2d(512, 256, kernel_size = 1, stride = (1,1), bias = False) 
     self.conv_c2_1x1 = nn.Conv2d(256, 256, kernel_size = 1, stride = (1,1), bias = False) 
-    # add in the prediction head over here -- implement it as a function possibly
-    #self.avgpool = nn.AdaptiveAvgPool2d((1,1))
-    #self.classifier = nn.Sequential( nn.Flatten(), nn.Linear(2048, 10))
+
   def forward(self, x):
     c1 = F.relu(self.conv1(x))
     print(x.shape)
@@ -119,14 +118,11 @@ class Resnet50FPN(nn.Module):
     print("M3: ", m3.shape)
     m2 = torch.concat((self.upsample(m3), self.conv_c2_1x1(c2)))
     print("M2: ", m2.shape) 
-    #print(x.shape)
-    #x = self.avgpool(x)
-    #print(x.shape)
-    #x = self.classifier(x)
-    #print(x.shape)
-    return x
+    return m5, m4, m3, m2
 
 net = Resnet50FPN(1, 10)
 t = torch.randn(1,1, 224, 224)
 net.forward(t)
-print(net)
+#print(net)
+
+print("done")
