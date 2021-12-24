@@ -14,4 +14,21 @@ The anchor boxes are then fed into two conv2D layers; one is for predicting thej
 These predictions are then fed into non-max suppression, after which they are fed into RoI pooling(check Fast RCNN) 
 The formula for the ROI layer's height and width for layer P(k) is: k = k(0) + log2(sqrt(wh)/224). 224 is the scale of the training image (if using ImageNet). k(0) = 4
 After this, they are sent through fully connected layers which will output class predictions 
+
+
+
+
+Useful functions from the pytorch libraries in this case:
+
+1. torchvision.ops.batched_nms
+2. torchvision.ops.box_area
+3. torchvision.ops.box_convert
+4. torchvision.ops.box_iou
+5. torchvision.ops.generalized_box_iou
+6. torchvision.ops.nms
+7. torchvision.ops.roi_pool
+
+
+
+
 """
