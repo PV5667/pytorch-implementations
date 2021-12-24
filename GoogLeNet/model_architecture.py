@@ -62,45 +62,66 @@ class GoogLeNet(nn.Module):
         self.pred_branch2 = nn.Sequential(nn.AvgPool2d(kernel_size = 5, stride = 3), 
                                          nn.Conv2d(528, 128, kernel_size = 3, stride = (1,1), padding = (1,1), bias = False), 
                                          nn.ReLU(), nn.Flatten(), nn.Linear(2048, 1024), nn.Dropout(0.7), nn.Linear(1024, 1000))
+
+
+        self.training = True
     def forward(self, x):
         x = self.conv_block1(x)
         x = self.inception3a(x)
         #print(x.size())
+        
         x = self.inception3b(x)
         #print(x.size())
+        
         x = self.maxpool1(x)
         print(x.size())
+
         x = self.inception4a(x)
         print(x.size())
         # add pred branch 1 here
+        if self.training = True:
+            pred1 = self.pred_branch1(x)
+
         x = self.inception4b(x)
         print(x.size())
+        
         x = self.inception4c(x)
         print(x.size())
+        
         x = self.inception4d(x)
         print(x.size())
         # add pred branch 2
+        if self.training = True:
+            pred2 = self.pred_branch2(x)
+        
         x = self.inception4e(x)
         print(x.size())
+        
         x = self.maxpool2(x)
         print(x.size())
+        
         x = self.inception5a(x)
         x = self.inception5b(x)
         print(x.size())
+        
         x = self.avgpool1(x)
         print(x.size())
+        
         x = self.dropout1(x)
         print(x.size())
+        
         x = self.flatten(x)
         print(x.size())
+        
         x = self.linear1(x)
         print(x.size())
+        if self.training = True:
+            return pred1, pred2, x
+        else:
+            return x
 
         
         
-
-
-
 #net = Inception_Module(256, [128, 128, 192, 32, 96, 64])
 
 net = GoogLeNet(3, 5)
