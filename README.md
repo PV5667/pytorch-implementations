@@ -11,14 +11,13 @@ These consist of residual blocks that allow for deeper networks (soetimes with 1
 
 # Upcoming
 GoogLeNet
-- Resolve the issue around how to use certain branches for training only.
-- https://stackoverflow.com/questions/67789463/how-to-discard-a-branch-after-training-a-pytorch-model
+- At this point, just need to implement the training file for this model.
 
 Faster R-CNN
 - Need to Implement:
-- Feature Pyramid Network (hopefully actual architecture will be easy to code )
 - Define, use anchor boxes (This part is what I anticipate to be challenging. For some reason, anchor boxes are not really intuitive to me.) 
-- I may need to write a kind of description after reading some papers to cement my understanding.
+- I may need to write a kind of description after reading some papers to cement my understanding 
+- A description of the workings of Faster R-CNN has been written in the model's folder
 - One big breakthrough in y understanding of anchor boxes is that they are predicting offsets to the anchor boxes rather than directly predicting the bounding box coordinates. 
 
 
