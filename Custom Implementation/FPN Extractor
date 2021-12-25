@@ -71,10 +71,9 @@ class ResidualBlockwith1x1(nn.Module):
     y = y + self.conv1x1(x) 
     y = F.relu(y)
     return y
-def upsample(size, x):
-  layer = nn.Upsample(size, mode = "nearest")
-  print(size)
-  return layer(x)
+def upsample(size): # , x):
+  #layer = nn.Upsample(size, mode = "nearest")
+  return nn.Upsample(size, mode = "nearest") #layer(x)
 
 class ResNet50FPN_P37(nn.Module):
   """ Implements an FPN with ResNet50 as a backbone. Returns the feature maps m7, m6, m5, m4, m3 in that order. """
@@ -89,8 +88,8 @@ class ResNet50FPN_P37(nn.Module):
     self.conv_c5_1x1 = nn.Conv2d(2048, 256, kernel_size = 1, stride = (1,1), bias = False) 
     self.conv_c4_1x1 = nn.Conv2d(1024, 256, kernel_size = 1, stride = (1,1), bias = False) 
     self.conv_c3_1x1 = nn.Conv2d(512, 256, kernel_size = 1, stride = (1,1),  bias = False) 
-    self.p6_p7_gen = nn.Conv2d(256, 256, kernel_size=(3,3), stride = (2,2), padding = 1)
-
+    self.p6_gen = nn.Conv2d(256, 256, kernel_size=(3,3), stride = (2,2), padding = 1)
+    self.p7_gen = nn.Conv2d(256, 256, kernel_size=(3,3), stride = (2,2), padding = 1)
   def forward(self, x):
     c1 = F.relu(self.conv1(x))
     print(x.shape)
@@ -109,14 +108,14 @@ class ResNet50FPN_P37(nn.Module):
     print("M5: ", m5.shape)
     #print(self.upsample(m5).shape)
     print(self.conv_c4_1x1(c4).shape)    
-    m4 = torch.concat((upsample((tuple(c4.shape)[-2:]), m5), self.conv_c4_1x1(c4)), dim = 0)
+    m4 = torch.concat(( upsample(tuple(c4.shape)[-2:])(m5), self.conv_c4_1x1(c4)), dim = 0)
     print("M4: ", m4.shape)
-    m3 = torch.concat((upsample(tuple(c3.shape)[-2:], m4), self.conv_c3_1x1(c3)), dim = 0)
+    m3 = torch.concat(( upsample(tuple(c3.shape)[-2:])(m4), self.conv_c3_1x1(c3)), dim = 0)
     print("M3: ", m3.shape)
     # m6 and m7 are results of downsampling by 2
-    m6 = F.relu(self.p6_p7_gen(m5))
+    m6 = F.relu(self.p6_gen(m5))
     print("M6: ", m6.shape)
-    m7 = F.relu(self.p6_p7_gen(m6))
+    m7 = F.relu(self.p7_gen(m6))
     print("M7: ", m7.shape)
     return m7, m6, m5, m4, m3
 
