@@ -36,3 +36,20 @@ implement an RPN and an Faster RCNN class --> for 4-step alternating training
 
 
 
+
+class Faster_RCNN(nn.Module):
+  def __init__(self, in_channels):
+    super().__init__()
+    self.FPN50 = ResNet50FPN(in_channels)
+    self.prep_conv = nn.Conv2d(256, 256, kernel_size = (3,3), padding = 1)
+
+  def forward(self, x):
+    m5, m4, m3, m2 = self.FPN50(x)
+    feature_maps = [m5, m4, m3, m2]
+    for i in range(len(feature_maps)):
+      anchors = generate_boxes(feature_maps[i], sizes = [1], ratios = [0.5, 1, 2]) ######### fugure out how to implement the specific anchor size ASAP
+      
+
+
+      
+
