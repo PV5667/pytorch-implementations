@@ -47,7 +47,7 @@ class Faster_RCNN(nn.Module):
     m5, m4, m3, m2 = self.FPN50(x)
     feature_maps = [m5, m4, m3, m2]
     for i in range(len(feature_maps)):
-      anchors = generate_boxes(feature_maps[i], sizes = [1], ratios = [0.5, 1, 2]) ######### fugure out how to implement the specific anchor size ASAP
+      anchors = generate_boxes(feature_maps[i], sizes = [1], ratios = [0.5, 1, 2]) ######### figure out how to implement the specific anchor size ASAP
       
 
 
