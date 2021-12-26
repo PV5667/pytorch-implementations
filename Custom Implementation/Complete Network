@@ -1,0 +1,43 @@
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class CompleteNetwork():
+  def __init__(self, in_channels, k_masks, num_classes, num_anchors):
+    self.FPN = ResNet50FPN_P37(in_channels)
+    self.protonet = ProtoNet(k_masks)
+    self.training = True
+    self.num_classes = num_classes
+    self.num_anchors = num_anchors
+    self.k_masks = k_masks
+
+  def forward(self, x):
+    num_classes = self.num_classes
+    num_anchors = self.num_anchors
+    k_masks = self.k_masks
+    p7, p6, p5, p4, p3 = self.FPN(x)
+    prototype_masks = self.protonet(p3)
+    feature_maps = [p7, p6, p5, p4, p3]
+    count = 0
+    for map in feature_maps:
+      count += 1
+      input_dimensions = tuple(map.shape)
+      flattened_dim = input_dimensions[1] * input_dimensions[2] * input_dimensions[3]
+      print(flattened_dim)
+      class_preds = class_pred(num_classes, num_anchors)(map)
+      box_preds = box_pred(num_anchors)(map)
+      coefficients = mask_coefficients(k_masks, num_anchors)
+      distance = distance_pred(input_dimensions)(map)
+      if self.training == True:
+        xy_preds = xy_pred(input_dimensions)(map)
+      #print(count, tuple(map.shape)[-3:])
+
+
+
+
+net = CompleteNetwork(3, 8, 10, 15)
+t = torch.randn(1, 3, 550, 550)
+net.forward(t)
+
+
+
