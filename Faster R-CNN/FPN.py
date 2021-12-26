@@ -1,9 +1,3 @@
-# define the actual structure of the FPN
-
-
-# using resnet 50 bakckbone, will make a new class called FPN with ResNet50 and add lateral connections, etc.
-# To Do: add predictor heads
-
 import torchvision
 import torch 
 import torch.nn as nn
@@ -78,9 +72,9 @@ class ResidualBlockwith1x1(nn.Module):
     y = F.relu(y)
     return y
 
-class Resnet50FPN(nn.Module):
+class ResNet50FPN(nn.Module):
   """ Implements an FPN with ResNet50 as a backbone. Returns the feature maps m5, m4, m3, m2 in that order. """
-  def __init__ (self, input_channels, output_channels):
+  def __init__ (self, input_channels):
     super().__init__()
     self.conv1 = nn.Conv2d(input_channels, 64, kernel_size=7, stride = (2,2), padding = 3)
     self.pool = nn.MaxPool2d(kernel_size = 3, stride = 2, padding = (1,1))
@@ -96,33 +90,34 @@ class Resnet50FPN(nn.Module):
 
   def forward(self, x):
     c1 = F.relu(self.conv1(x))
-    print(x.shape)
+    #print(x.shape)
     c1 = self.pool(c1)
-    print(c1.shape)
+    #print(c1.shape)
     c2 = self.conv2(c1)
-    print(c2.shape)
+    #print(c2.shape)
     c3 = self.conv3(c2)
-    print(c3.shape)
+    #print(c3.shape)
     c4 = self.conv4(c3)
-    print(c4.shape)
+    #print(c4.shape)
     c5 = self.conv5(c4)
-    print(c5.shape)
+    #print(c5.shape)
     # m5, m4, m3, m2 all must have 256-d because of shared predictor so 1 x 1 conv used
     m5 = self.conv_c5_1x1(c5)
     print("M5: ", m5.shape)
     #print(c5.shape)
     ## layers m4, m3, m2 need to be upsampled by a factor of 2
-    m4 = torch.concat((self.upsample(m5), self.conv_c4_1x1(c4)))
+    m4 = torch.add(self.upsample(m5), self.conv_c4_1x1(c4))
     print("M4: ", m4.shape)
-    m3 = torch.concat((self.upsample(m4), self.conv_c3_1x1(c3)))
+    m3 = torch.add(self.upsample(m4), self.conv_c3_1x1(c3))
     print("M3: ", m3.shape)
-    m2 = torch.concat((self.upsample(m3), self.conv_c2_1x1(c2)))
-    print("M2: ", m2.shape) 
+    m2 = torch.add(self.upsample(m3), self.conv_c2_1x1(c2))
+    print("M2: ", m2.shape)
     return m5, m4, m3, m2
 
-net = Resnet50FPN(1, 10)
-t = torch.randn(1,1, 224, 224)
+net = ResNet50FPN(3)
+t = torch.randn(1,3, 640, 480)
 net.forward(t)
 #print(net)
+
 
 print("done")
