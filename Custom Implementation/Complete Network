@@ -10,6 +10,7 @@ class CompleteNetwork():
     self.num_classes = num_classes
     self.num_anchors = num_anchors
     self.k_masks = k_masks
+    self.prep_conv = nn.Conv2d(256, 256, kernel_size = (3,3), stride = (1,1), padding = 1)
 
   def forward(self, x):
     num_classes = self.num_classes
@@ -21,6 +22,7 @@ class CompleteNetwork():
     count = 0
     for map in feature_maps:
       count += 1
+      map = self.prep_conv(map)
       input_dimensions = tuple(map.shape)
       flattened_dim = input_dimensions[1] * input_dimensions[2] * input_dimensions[3]
       print(flattened_dim)
