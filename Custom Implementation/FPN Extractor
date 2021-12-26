@@ -108,9 +108,9 @@ class ResNet50FPN_P37(nn.Module):
     print("M5: ", m5.shape)
     #print(self.upsample(m5).shape)
     print(self.conv_c4_1x1(c4).shape)    
-    m4 = torch.concat(( upsample(tuple(c4.shape)[-2:])(m5), self.conv_c4_1x1(c4)), dim = 0)
+    m4 = torch.add(upsample(tuple(c4.shape)[-2:])(m5), self.conv_c4_1x1(c4))
     print("M4: ", m4.shape)
-    m3 = torch.concat(( upsample(tuple(c3.shape)[-2:])(m4), self.conv_c3_1x1(c3)), dim = 0)
+    m3 = torch.add(upsample(tuple(c3.shape)[-2:])(m4), self.conv_c3_1x1(c3))
     print("M3: ", m3.shape)
     # m6 and m7 are results of downsampling by 2
     m6 = F.relu(self.p6_gen(m5))
