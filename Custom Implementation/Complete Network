@@ -33,7 +33,7 @@ class CompleteNetwork():
       if self.training == True:
         xy_preds = xy_pred(input_dimensions)(map)
       #print(count, tuple(map.shape)[-3:])
-
+ 
 
 
 
