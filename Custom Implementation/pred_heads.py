@@ -37,4 +37,3 @@ def xy_pred(in_dimensions):
   input = in_dimensions[1] * in_dimensions[2] * in_dimensions[3]
   layers = nn.Sequential(nn.Conv2d(256, 2, kernel_size = (1,1), stride = (1, 1), bias = False),  nn.Tanh())
   return layers
-
