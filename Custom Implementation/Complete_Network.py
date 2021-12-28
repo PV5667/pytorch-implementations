@@ -25,6 +25,7 @@ class CompleteNetwork():
     count = 0
     class_preds = []
     bbox_preds = []
+    coefficients = []
     distances = []
     xy_preds = []
 
@@ -33,36 +34,55 @@ class CompleteNetwork():
       map = self.prep_conv(map)
       input_dimensions = tuple(map.shape)
       flattened_dim = input_dimensions[1] * input_dimensions[2] * input_dimensions[3]
-      print(flattened_dim)
+      #print(flattened_dim)
 
       class_preds.append(class_pred(num_classes, num_anchors)(map))
 
       bbox_preds.append(box_pred(num_anchors)(map))
 
-      coefficients = mask_coefficients(k_masks, num_anchors)
+      coefficients.append(mask_coefficients(k_masks, num_anchors)(map))
       
       distances.append(distance_pred(input_dimensions)(map))
 
       if self.training == True:
         xy_preds.append(xy_pred(input_dimensions)(map))
       #print(count, tuple(map.shape)[-3:])
-    print(concat(bbox_preds).shape)
-    print(concat(class_preds).shape)
-    print(concat(distances).shape)
+    #print(concat(bbox_preds).shape)
+    #print(concat(class_preds).shape)
+    #print(concat(distances).shape)
 
+    #for pred in bbox_preds:
+    #  print("BBox: ", pred.shape)
     bbox_preds = concat(bbox_preds)
-    class_preds = concat(class_preds)
-    distances = concat(distances)
+    bbox_preds = bbox_preds.reshape(bbox_preds.shape[0], -1, 4)
+    print(bbox_preds.shape)
 
+    class_preds = concat(class_preds)
+    class_preds = class_preds.reshape(class_preds.shape[0], -1, num_classes)
+    print(class_preds.shape)
+
+    distances = concat(distances)
+    distances = distances.reshape(distances.shape[0], -1, 1)
+    print(distances.shape)
+
+    coefficients = concat(coefficients)
+    coefficients = coefficients.reshape(coefficients.shape[0], -1, k_masks)
+    print(coefficients.shape)
 
     if self.training == True:
-      print(concat(xy_preds).shape)
+      #print(concat(xy_preds).shape)
       xy_preds = concat(xy_preds)
-      return bbox_preds, class_preds, distances, xy_preds
+      xy_preds = xy_preds.reshape(xy_preds.shape[0], -1, 2)
+      print(xy_preds.shape)
+      
+      #return bbox_preds, class_preds, coefficients, prototype_masks, distances, xy_preds
+    
+    #return bbox_preds, class_preds, coefficients, prototype_masks, distances
 # TODO: implement fast nms, anchor box functions, concatenating predictions
 
 
-net = CompleteNetwork(3, 8, 10, 15)
+net = CompleteNetwork(3, 8, 10, 3)
 t = torch.randn(2, 3, 550, 550)
 net.forward(t)
+
 
