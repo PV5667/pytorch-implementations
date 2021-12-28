@@ -1,3 +1,6 @@
+# anchor ratios: (1,1), (1, 2), (2, 1)
+# anchor scales: (1) --> only happens at one scale
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -20,27 +23,46 @@ class CompleteNetwork():
     prototype_masks = self.protonet(p3)
     feature_maps = [p7, p6, p5, p4, p3]
     count = 0
+    class_preds = []
+    bbox_preds = []
+    distances = []
+    xy_preds = []
+
     for map in feature_maps:
       count += 1
       map = self.prep_conv(map)
       input_dimensions = tuple(map.shape)
       flattened_dim = input_dimensions[1] * input_dimensions[2] * input_dimensions[3]
       print(flattened_dim)
-      class_preds = class_pred(num_classes, num_anchors)(map)
-      box_preds = box_pred(num_anchors)(map)
-      coefficients = mask_coefficients(k_masks, num_anchors)
-      distance = distance_pred(input_dimensions)(map)
-      if self.training == True:
-        xy_preds = xy_pred(input_dimensions)(map)
-      #print(count, tuple(map.shape)[-3:])
- 
 
+      class_preds.append(class_pred(num_classes, num_anchors)(map))
+
+      bbox_preds.append(box_pred(num_anchors)(map))
+
+      coefficients = mask_coefficients(k_masks, num_anchors)
+      
+      distances.append(distance_pred(input_dimensions)(map))
+
+      if self.training == True:
+        xy_preds.append(xy_pred(input_dimensions)(map))
+      #print(count, tuple(map.shape)[-3:])
+    print(concat(bbox_preds).shape)
+    print(concat(class_preds).shape)
+    print(concat(distances).shape)
+
+    bbox_preds = concat(bbox_preds)
+    class_preds = concat(class_preds)
+    distances = concat(distances)
+
+
+    if self.training == True:
+      print(concat(xy_preds).shape)
+      xy_preds = concat(xy_preds)
+      return bbox_preds, class_preds, distances, xy_preds
+# TODO: implement fast nms, anchor box functions, concatenating predictions
 
 
 net = CompleteNetwork(3, 8, 10, 15)
-t = torch.randn(1, 3, 550, 550)
+t = torch.randn(2, 3, 550, 550)
 net.forward(t)
 
-
-
- 
