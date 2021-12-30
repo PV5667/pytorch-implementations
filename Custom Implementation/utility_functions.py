@@ -235,7 +235,18 @@ def boxes_to_offsets(anchors, assigned_bboxes):
   offsets = torch.cat((offset_x, offset_y, offset_w, offset_h), dim = 1) ##### test this out -- not sure if the dimension is 1??
   return offsets
 
+def offsets_to_bboxes(anchors, offset_preds):
+  center_anchors = corner_to_center(anchors)
+  ox, oy, ow, oh = offset_preds[:, 0], offset_preds[:, 1], offset_preds[:, 2], offset_preds[:, 3]
+  ax, ay, aw, ah = center_anchors[:, 0], center_anchors[:, 1], center_anchors[:, 2], center_anchors[:, 3]
 
+  bx = ((ox * aw) / 10) + ax
+  by = ((oy * ah) / 10) + ay
+  bw = torch.exp(ow / 5) * aw
+  bh = torch.exp(oh / 5) * ah
+
+  bboxes = torch.cat((bx, by, bw, bh), dim = 1)
+  return bboxes
 
 test = grid_anchors(feature_map_sizes, strides, base_anchors)
 
