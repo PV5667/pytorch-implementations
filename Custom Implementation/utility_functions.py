@@ -79,3 +79,34 @@ def concat(preds):
   return torch.cat(results, dim = 1)
 
 
+############### anchor box functions ##################
+
+
+
+
+import torch
+
+
+feature_maps = [(256, 69, 69), (256, 35, 35), (256, 18, 18), (256, 9, 9), (256, 5, 5)]
+
+data_img_size = (3, 550, 550)
+img_w, img_h = data_img_size[-2:]
+
+
+
+def anchors(sizes, aspect_ratios):
+  sizes = torch.tensor(sizes)
+  aspect_ratios = torch.tensor(aspect_ratios)
+
+  h_scales = torch.sqrt(aspect_ratios)
+  w_scales = 1/h_scales
+
+  widths = (w_scales.view(w_scales.shape[0], 1) * sizes.view(1, sizes.shape[0])).view(-1)
+  heights = (h_scales.view(h_scales.shape[0], 1) * sizes.view(1, sizes.shape[0])).view(-1)
+
+  templates = torch.stack([-widths, -heights, widths, heights], dim = 1)/2 
+
+  return templates.round()
+sizes = ((24, 48, 96, 192, 384),)
+
+aspect_ratios=((0.5, 1.0, 2.0),)
