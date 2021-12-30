@@ -250,9 +250,6 @@ def offsets_to_bboxes(anchors, offset_preds):
 
 test = grid_anchors(feature_map_sizes, strides, base_anchors)
 
-for i in test:
-  print("-------------||||||||||---------")
-  print(bbox_to_center(i).shape)
 
 def match_boxes(ground_truth, anchors, iou_thresh):
   num_bboxes, num_anchors = len(ground_truth), len(anchors)
