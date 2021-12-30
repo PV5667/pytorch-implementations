@@ -187,7 +187,24 @@ def grid_anchors(map_sizes, strides, base_anchors):
 
 
 
+def bbox_to_center(bboxes):
+  # fed in as TopLeftX, TopLeftY, BottomRightX, BottomRightY
+  # return as centerX, centerY, width, height
+  center_x = bboxes[:, 2] + bboxes[:, 0] / 2
+  center_y = bboxes[:, 3] + bboxes[:, 1] / 2
+
+  width = bboxes[:, 2] - bboxes[:, 0]
+  height = bboxes[:, 3] - bboxes[:, 1]
+  
+  boxes_as_centers = torch.stack([center_x, center_y, width, height], dim = -1)
+
+  return boxes_as_centers
+
+
 
 
 for i in grid_anchors(feature_map_sizes, strides, base_anchors):
   print(i.shape)
+
+
+
