@@ -185,3 +185,8 @@ def grid_anchors(map_sizes, strides, base_anchors):
 
     output.append((result.view(-1, 1 , 4) + anchors_to_be_projected).reshape(-1, 4))
   return output 
+
+
+
+for i in grid_anchors(feature_map_sizes, strides, base_anchors):
+  print(i.shape)
