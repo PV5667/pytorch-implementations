@@ -125,3 +125,20 @@ def base_anchor_generator(sizes=sizes, aspect_ratios=aspect_ratios):
 base_anchor__generator()
 
 print(base_anchors[0])
+
+
+
+strides = []
+
+feature_map_sizes = [(69, 69), (35, 35), (18, 18), (9, 9), (5, 5)]
+
+def stride_generator(feature_map_sizes=feature_map_sizes):
+  for size in feature_map_sizes:
+    h_stride = img_h // size[0] 
+    w_stride = img_w // size[1]
+    strides.append([torch.tensor(h_stride), torch.tensor(w_stride)])
+
+stride_generator()
+
+
+print(strides)
