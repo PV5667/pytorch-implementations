@@ -142,3 +142,46 @@ stride_generator()
 
 
 print(strides)
+
+
+
+count = 0
+
+def grid_anchors(map_sizes, strides, base_anchors):
+  
+  output = []
+  count = 0
+  print(len(map_sizes))
+  print(len(strides))
+  #print(len(cell_anchors))
+  for i in range(len(strides)):
+    stride = strides[i]
+    size = map_sizes[i]
+    map_height, map_width = size
+    x_stride, y_stride = stride
+    
+
+    centers_x = torch.arange(map_width) * x_stride
+    centers_y = torch.arange(map_height) * y_stride
+
+    # generate a grid of these centers
+
+    centers_x, centers_y = torch.meshgrid(centers_x, centers_y, indexing="ij")
+    print(centers_x.shape)
+    print(centers_y.shape)
+
+    # flatten resulting grids
+    centers_x = centers_x.reshape(-1)
+    centers_y = centers_y.reshape(-1)
+
+    
+    result = torch.stack((centers_x, centers_y, centers_x, centers_y), dim = 1)
+    print("-----------------------")
+
+    #print(result.view(-1, 1, 4))
+    anchors_to_be_projected = torch.cat((base_anchors[0][i], base_anchors[0][i + 5], base_anchors[0][i + 10]))
+    anchors_to_be_projected = anchors_to_be_projected.reshape(-1, 4)
+
+
+    output.append((result.view(-1, 1 , 4) + anchors_to_be_projected).reshape(-1, 4))
+  return output 
