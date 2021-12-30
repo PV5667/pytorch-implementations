@@ -248,7 +248,6 @@ def offsets_to_bboxes(anchors, offset_preds):
   bboxes = torch.cat((bx, by, bw, bh), dim = 1)
   return bboxes
 
-test = grid_anchors(feature_map_sizes, strides, base_anchors)
 
 
 def match_boxes(ground_truth, anchors, iou_thresh):
@@ -283,3 +282,12 @@ def match_boxes(ground_truth, anchors, iou_thresh):
     jaccard_matrix[:, b_j] = fill_col
     jaccard_matrix[a_i, :] = fill_row
   return pair_map
+
+
+test = grid_anchors(feature_map_sizes, strides, base_anchors)
+
+for i in test:
+  #print("-------------||||||||||---------")
+  #print(corner_to_center(i).shape)
+  hello = match_boxes(i[:3]*2, i, 0.2)
+
