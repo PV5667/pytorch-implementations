@@ -203,8 +203,8 @@ def bbox_to_center(bboxes):
 
 
 
-for i in grid_anchors(feature_map_sizes, strides, base_anchors):
-  print(i.shape)
+test = grid_anchors(feature_map_sizes, strides, base_anchors)
 
-
-
+for i in test:
+  print("-------------||||||||||---------")
+  print(bbox_to_center(i).shape)
