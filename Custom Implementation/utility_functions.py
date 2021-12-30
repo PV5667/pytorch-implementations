@@ -216,6 +216,27 @@ def center_to_corner(bboxes):
 
   return boxes_as_corners
 
+
+
+def boxes_to_offsets(anchors, assigned_bboxes):
+  # make everything into center format
+  center_anchors = corner_to_center(anchors)
+  center_bboxes = corner_to_center(assigned_bboxes)
+
+  a_cx, a_cy, a_w, a_h = center_anchors[: 0], center_anchors[: 1], center_anchors[: 2], center_anchors[: 3] 
+  b_cx, b_cy, b_w, b_h = center_bboxes[: 0], center_bboxes[: 1], center_bboxes[: 2], center_bboxes[: 3]
+  
+  offset_x = (b_cx - a_cx)/a_w * 10
+  offset_y = (b_cy - a_cy)/a_h * 10
+
+  offset_w = torch.log(b_w/a_w) * 5 
+  offset_h = torch.log(b_h/a_h) * 5 
+
+  offsets = torch.cat((offset_x, offset_y, offset_w, offset_h), dim = 1) ##### test this out -- not sure if the dimension is 1??
+  return offsets
+
+
+
 test = grid_anchors(feature_map_sizes, strides, base_anchors)
 
 for i in test:
