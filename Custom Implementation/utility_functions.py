@@ -110,3 +110,18 @@ def anchors(sizes, aspect_ratios):
 sizes = ((24, 48, 96, 192, 384),)
 
 aspect_ratios=((0.5, 1.0, 2.0),)
+
+
+
+base_anchors = []
+
+
+
+def base_anchor_generator(sizes=sizes, aspect_ratios=aspect_ratios):
+  for size in sizes: 
+    for ratio in aspect_ratios:
+      base_anchors.append(anchors(size, ratio))
+
+base_anchor__generator()
+
+print(base_anchors[0])
