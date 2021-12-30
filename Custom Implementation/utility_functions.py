@@ -202,6 +202,19 @@ def bbox_to_center(bboxes):
 
 
 
+def center_to_corner(bboxes):
+  # fed in as centerX, centerY, width, height
+  # return as TopLeftX, TopLeftY, BottomRightX, BottomRightY
+  center_x, center_y, width, height = bboxes[:, 0], bboxes[:, 1], bboxes[:, 2], bboxes[:, 3]
+
+  top_left_x = center_x - width * 0.5
+  top_left_y = center_y - height * 0.5
+  bottom_right_x = center_x + width * 0.5
+  bottom_right_y = center_y + height * 0.5
+
+  boxes_as_corners = torch.stack([top_left_x, top_left_y, bottom_right_x, bottom_right_y], dim = -1)
+
+  return boxes_as_corners
 
 test = grid_anchors(feature_map_sizes, strides, base_anchors)
 
