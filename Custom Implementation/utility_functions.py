@@ -281,7 +281,5 @@ def match_boxes(ground_truth, anchors, iou_thresh):
 test = grid_anchors(feature_map_sizes, strides, base_anchors)
 
 for i in test:
-  #print("-------------||||||||||---------")
-  #print(corner_to_center(i).shape)
   hello = match_boxes(i[:3]*2, i, 0.2)
 
