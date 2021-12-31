@@ -280,26 +280,6 @@ def match_boxes(ground_truth, anchors, iou_thresh):
 
 
 
-bbox_alpha = 1
-conf_alpha = 1.5
-mask_alpha = 6.125
-
-# TODO: implement the "match" function here at https://github.com/dbolya/yolact/blob/57b8f2d95e62e2e649b382f516ab41f949b57239/layers/box_utils.py#L159
-
-
-
-
-def bbox_L1_loss(pos_idx, bbox_preds, bbox_targets):
-  bbox_preds = bbox_preds[pos_idx].reshape(-1, 4)
-  bbox_targets = loc_t[pos_idx].reshape(-1, 4)
-  bbox_loss = nn.SmoothL1Loss(bbox_preds, loc_t, reduction = "sum") * bbox_alpha
-  return bbox_loss
-
-
-
-def combined_class_box_loss(predictions):
-  """Predictions will be inputted as bbox offsets, class labels, mask tensors, 3D points"""
-
 
 
 
