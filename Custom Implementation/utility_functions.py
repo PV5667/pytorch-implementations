@@ -277,12 +277,18 @@ def match_boxes(ground_truth, anchors, iou_thresh):
     jaccard_matrix[a_i, :] = fill_row
   return pair_map
 
-  
+
 def bbox_L1_loss(pos_idx, bbox_preds, bbox_targets):
   bbox_preds = bbox_preds[pos_idx].reshape(-1, 4)
   bbox_targets = loc_t[pos_idx].reshape(-1, 4)
   bbox_loss = nn.SmoothL1Loss(bbox_preds, loc_t, reduction = "sum") * bbox_alpha
   return bbox_loss
+
+
+
+def combined_class_box_loss(predictions):
+  """Predictions will be inputted as bbox offsets, class labels, mask tensors, 3D points"""
+
 
 test = grid_anchors(feature_map_sizes, strides, base_anchors)
 
