@@ -257,14 +257,9 @@ def match_boxes(ground_truth, anchors, iou_thresh):
 
   pair_map = torch.ones((num_anchors,), dtype = torch.long  ) * -1
   max_ious, indices = torch.max(jaccard_matrix, dim = 1)
-  #print(indices)
   anchor = torch.nonzero(max_ious >= iou_thresh).reshape(-1)
   box = indices[max_ious >= iou_thresh]
-  #print(anchor)
-  #print(box)
-  #print(pair_map)
   pair_map[anchor] = box
-  #print(pair_map)
 
 
   fill_col = torch.ones((num_anchors, ), dtype = torch.long) * -1
@@ -273,7 +268,6 @@ def match_boxes(ground_truth, anchors, iou_thresh):
 
   for i in range(num_bboxes):
     max_idx = torch.argmax(jaccard_matrix)
-    #print(max_idx)
     b_j = (max_idx % num_bboxes).long()
     a_i = (max_idx / num_bboxes).long()
 
