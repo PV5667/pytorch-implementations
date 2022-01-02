@@ -27,6 +27,6 @@ Fully Convolutional Network
 - It is really interesting to see that the data is shown as images with the masks already drawn.
 - Using color codes, we just need to make labels of the images.
 - Possible model to implement: U-Net
-
+ 
 
 
