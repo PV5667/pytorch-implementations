@@ -10,7 +10,7 @@ These consist of residual blocks that allow for deeper networks (sometimes with 
  Introduced Network in Network (NiN) modules for CNNs. Uses two auxiliary branches for predictions during training to combat gradient loss. During evaluation, only one branch is used.
 
 # Upcoming
-GoogLeNet
+GoogLeNet 
 - At this point, just need to implement the training file for this model.
 
 Faster R-CNN
