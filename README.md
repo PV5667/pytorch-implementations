@@ -28,6 +28,6 @@ Fully Convolutional Network
 - Using color codes, we just need to make labels of the images.
 - Possible model to implement: U-Net
    
-
+ 
 
  
