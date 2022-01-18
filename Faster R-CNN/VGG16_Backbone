@@ -3,6 +3,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+
+"""A full version of this backbone can be found in another folder in this repository."""
+
 class VGG16_BackBone(nn.Module):
     def __init__ (self, input_channels):
         super().__init__()
