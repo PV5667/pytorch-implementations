@@ -62,3 +62,24 @@ def offsets_to_bboxes(anchors, offset_preds):
   bboxes = torch.cat((bx, by, bw, bh), dim = 0)
   return bboxes
 
+def anchors(sizes, aspect_ratios):
+  sizes = torch.tensor(sizes)
+  aspect_ratios = torch.tensor(aspect_ratios)
+
+  h_scales = torch.sqrt(aspect_ratios)
+  w_scales = 1/h_scales
+
+  widths = (w_scales.view(w_scales.shape[0], 1) * sizes.view(1, sizes.shape[0])).view(-1)
+  heights = (h_scales.view(h_scales.shape[0], 1) * sizes.view(1, sizes.shape[0])).view(-1)
+
+  templates = torch.stack([-widths, -heights, widths, heights], dim = 1)/2 
+
+  return templates.round()
+
+strides = []
+
+feature_map_sizes = [(14, 14), (14, 14), (14, 14)]
+
+sizes = ((128, 256, 512),)
+
+aspect_ratios=((0.5, 1.0, 2.0),)
