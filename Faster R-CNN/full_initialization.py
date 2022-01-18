@@ -1,3 +1,10 @@
+import torch
+import torchvision
+import torchvision.nn.functional as F
+
+
+
+
 def binary_pred(num_anchors):
   # softmax will automatically be applied when cross entropy loss is used
   return nn.Sequential(nn.Conv2d(512, num_anchors, kernel_size = (1,1), stride = (1,1), bias = False), nn.Sigmoid())
