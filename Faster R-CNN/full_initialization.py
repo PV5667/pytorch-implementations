@@ -33,3 +33,32 @@ Useful functions from the pytorch libraries in this case:
 
 
 """
+
+
+def corner_to_center(bboxes):
+  # fed in as TopLeftX, TopLeftY, BottomRightX, BottomRightY
+  # return as centerX, centerY, width, height
+  center_x = bboxes[:, :, 2] + bboxes[:, :, 0] / 2
+  center_y = bboxes[:, :, 3] + bboxes[:, :, 1] / 2
+
+  width = bboxes[:, :, 2] - bboxes[:, :, 0]
+  height = bboxes[:, :, 3] - bboxes[:, :, 1]
+  
+  boxes_as_centers = torch.stack([center_x, center_y, width, height], dim = -1)
+
+  return boxes_as_centers
+
+
+def offsets_to_bboxes(anchors, offset_preds):
+  center_anchors = corner_to_center(anchors)
+  ox, oy, ow, oh = offset_preds[:, :, 0], offset_preds[:, :, 1], offset_preds[:, :, 2], offset_preds[:, :, 3]
+  ax, ay, aw, ah = center_anchors[:, :, 0], center_anchors[:, :, 1], center_anchors[:, :, 2], center_anchors[:, :, 3]
+
+  bx = ((ox * aw) / 10) + ax
+  by = ((oy * ah) / 10) + ay
+  bw = torch.exp(ow / 5) * aw
+  bh = torch.exp(oh / 5) * ah
+
+  bboxes = torch.cat((bx, by, bw, bh), dim = 0)
+  return bboxes
+
