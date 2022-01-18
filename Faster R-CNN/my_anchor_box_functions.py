@@ -1,7 +1,7 @@
 import torch
 import torchvision
 
-feature_maps = [(256, 69, 69), (256, 35, 35), (256, 18, 18), (256, 9, 9), (256, 5, 5)]
+feature_maps = [(256, 69, 69), (256, 35, 35), (256, 18, 18), (256, 9, 9), (256, 5, 5)] # this is a configuration for fpn p3 p7 with input image size of 550, 550
 
 data_img_size = (3, 550, 550)
 img_w, img_h = data_img_size[-2:]
