@@ -11,7 +11,7 @@ These consist of residual blocks that allow for deeper networks (sometimes with 
 
 # Upcoming
 GoogLeNet 
-- At this point, just need to implement the training file for this model.
+- At this point, just need to implement the training file for this model. 
 
 Faster R-CNN
 - Need to Implement:
