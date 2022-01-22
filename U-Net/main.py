@@ -1,8 +1,17 @@
-import torch
+import torch                                                                                                                                                                                                                                                           
 import torchvision                                                                                                                                      
-import torch.nn as nn                                                                                                                       
+import torch.nn as nn  
+import torch.nn.functional as F
+from torchvision.transforms.functional import center_crop
                                                                                                                                             
-                                                                                                                                            
+
+def first_block(channels, input):
+  input_channels = channels[0]
+  output_channels = channels[1]
+  layers = nn.Sequential(nn.Conv2d(input_channels, output_channels, kernel_size = (3,3), stride = (1,1),  bias = False), nn.BatchNorm2d(output_channels), nn.ReLU(inplace = True),
+                         nn.Conv2d(output_channels, output_channels, kernel_size = (3,3), stride = (1,1), bias = False), nn.BatchNorm2d(output_channels), nn.ReLU(inplace = True))
+  return layers(input)
+                                                                                                                                                   
                                                                                                                                             
 
                                                                                                                                             
