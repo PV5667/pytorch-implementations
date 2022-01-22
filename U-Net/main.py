@@ -50,8 +50,12 @@ def UNet_Up_Block(channels, input_size, from_left, from_bottom):
                                                                                                                                             
 def conv1x1(input_channels, output_channels):
   return nn.Sequential(nn.Conv2d(input_channels, output_channels, kernel_size = (1,1), stride = (1, 1), bias = False))
-                                                           
-                                                                                                                                            
+
+
+def conv_transpose(input_channels, output_channels):
+  return nn.ConvTranspose2d(input_channels, output_channels, kernel_size = 2, stride = 2)
+
+                                                                                                                                  
 class UNet(nn.Module):                                                                                                                               
   def __init__(self, input_channels, output_channels = 2, num_classes = 2):                                                                                  
     super().__init__()
