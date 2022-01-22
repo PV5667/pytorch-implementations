@@ -14,8 +14,8 @@ def UNet_Block(channels):
                          nn.Conv2d(output_channels, output_channels, kernel_size = (3,3), stride = (1,1), padding = (1,1), bias = False), nn.BatchNorm2d(output_channels), nn.ReLU(inplace = True))
   return layers                                                       
                                                                                                                                             
-def conv1x1(input_channels):
-  return nn.Sequential(nn.Conv2d(input_channels, input_channels, kernel_size = (1,1), stride = (1, 1), bias = False))
+def conv1x1(input_channels, output_channels):
+  return nn.Sequential(nn.Conv2d(input_channels, output_channels, kernel_size = (1,1), stride = (1, 1), bias = False))
                                                            
                                                                                                                                             
 class UNet(nn.Module):                                                                                                                               
