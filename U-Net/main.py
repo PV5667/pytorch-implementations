@@ -11,8 +11,20 @@ def first_block(channels, input):
   layers = nn.Sequential(nn.Conv2d(input_channels, output_channels, kernel_size = (3,3), stride = (1,1),  bias = False), nn.BatchNorm2d(output_channels), nn.ReLU(inplace = True),
                          nn.Conv2d(output_channels, output_channels, kernel_size = (3,3), stride = (1,1), bias = False), nn.BatchNorm2d(output_channels), nn.ReLU(inplace = True))
   return layers(input)
-                                                                                                                                                   
-                                                                                                                                            
+
+
+
+def UNet_Down_Block(channels, from_up):
+  """Define the UNet repeating blocks(downward convolutions)"""
+
+  maxpool_layer = nn.MaxPool2d(kernel_size = (2, 2), stride = 2)
+  result = maxpool_layer(from_up)
+
+  input_channels = channels[0]
+  output_channels = channels[1]
+  layers = nn.Sequential(nn.Conv2d(input_channels, output_channels, kernel_size = (3,3), stride = (1,1),  bias = False), nn.BatchNorm2d(output_channels), nn.ReLU(inplace = True),
+                         nn.Conv2d(output_channels, output_channels, kernel_size = (3,3), stride = (1,1), bias = False), nn.BatchNorm2d(output_channels), nn.ReLU(inplace = True))
+  return layers(result)                                                                                                                                      
 
                                                                                                                                             
 def UNet_Block(channels):
