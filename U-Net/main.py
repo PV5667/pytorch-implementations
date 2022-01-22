@@ -26,14 +26,7 @@ def UNet_Down_Block(channels, from_up):
                          nn.Conv2d(output_channels, output_channels, kernel_size = (3,3), stride = (1,1), bias = False), nn.BatchNorm2d(output_channels), nn.ReLU(inplace = True))
   return layers(result)                                                                                                                                      
 
-                                                                                                                                            
-def UNet_Block(channels):
-  """Define the UNet repeating blocks"""
-  input_channels = channels[0]
-  output_channels = channels[1]
-  layers = nn.Sequential(nn.Conv2d(input_channels, output_channels, kernel_size = (3,3), stride = (1,1), padding = (1, 1), bias = False), nn.BatchNorm2d(output_channels), nn.ReLU(inplace = True),
-                         nn.Conv2d(output_channels, output_channels, kernel_size = (3,3), stride = (1,1), padding = (1,1), bias = False), nn.BatchNorm2d(output_channels), nn.ReLU(inplace = True))
-  return layers                                                       
+                                                    
                                                                                                                                             
 def conv1x1(input_channels, output_channels):
   return nn.Sequential(nn.Conv2d(input_channels, output_channels, kernel_size = (1,1), stride = (1, 1), bias = False))
