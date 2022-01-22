@@ -26,7 +26,27 @@ def UNet_Down_Block(channels, from_up):
                          nn.Conv2d(output_channels, output_channels, kernel_size = (3,3), stride = (1,1), bias = False), nn.BatchNorm2d(output_channels), nn.ReLU(inplace = True))
   return layers(result)                                                                                                                                      
 
-                                                    
+def UNet_Up_Block(channels, input_size, from_left, from_bottom):
+  """
+  Define the UNet repeating blocks(upward convolutions)
+  from_left: the tensor from the corresponding level of the downward path
+  from_bottom: the tensor from the immediately previous layer of the network
+  
+  from_left will be center cropped and from_bottom will be upsampled. 
+  Both will then be concatenated.
+  """
+
+  from_left = center_crop(from_left, [input_size, input_size])
+  from_bottom = conv_transpose(from_bottom.shape[1], from_left.shape[1])(from_bottom)
+
+  result = torch.concat((from_bottom, from_left), 1)
+
+  input_channels = channels[0]
+  output_channels = channels[1]
+
+  layers = nn.Sequential(nn.Conv2d(input_channels, output_channels, kernel_size = (3,3), stride = (1,1),  bias = False), nn.BatchNorm2d(output_channels), nn.ReLU(inplace = True),
+                         nn.Conv2d(output_channels, output_channels, kernel_size = (3,3), stride = (1,1), bias = False), nn.BatchNorm2d(output_channels), nn.ReLU(inplace = True))
+  return layers(result)                                                 
                                                                                                                                             
 def conv1x1(input_channels, output_channels):
   return nn.Sequential(nn.Conv2d(input_channels, output_channels, kernel_size = (1,1), stride = (1, 1), bias = False))
