@@ -12,6 +12,23 @@ def first_block(channels, input):
                          nn.Conv2d(output_channels, output_channels, kernel_size = (3,3), stride = (1,1), bias = False), nn.BatchNorm2d(output_channels), nn.ReLU(inplace = True))
   return layers(input)
 
+def reverse_conv(output_size):
+  """Simply calculates the input size for each unet block when given the output size"""
+  input_size = output_size + 4
+  return input_size
+
+
+def get_input_size(output_size):
+  """Given the expected output size of the network, the input size is outputted"""
+  for _ in range(4):
+    output_size = reverse_conv(output_size) / 2
+  for _ in range(4):
+    output_size = reverse_conv(output_size) * 2
+  input_size = output_size + 4
+  return input_size
+
+def calculate_padding(input_size, output_size):
+  padding = (input_size - output_size) / 2
 
 
 def UNet_Down_Block(channels, from_up):
