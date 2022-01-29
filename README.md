@@ -20,7 +20,7 @@ Faster R-CNN
 - One big breakthrough in my understanding of anchor boxes is that they are predicting offsets to the anchor boxes rather than directly predicting the bounding box coordinates. 
 
 
-Fully Convolutional Network
+Fully Convolutional Network 
 - This, I feel will be important for the monocular depth perception project that I'm doing.
 - Will use this for the semantic segmentation part of the model
 - It is really interesting to see that the data is shown as images with the masks already drawn.
