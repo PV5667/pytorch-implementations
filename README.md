@@ -17,7 +17,7 @@ Faster R-CNN
 - Need to Implement:
 - I may need to write a kind of description after reading some papers to cement my understanding 
 - A description of the workings of Faster R-CNN has been written in the model's folder
-- One big breakthrough in my understanding of anchor boxes is that they are predicting offsets to the anchor boxes rather than directly predicting the bounding box coordinates. 
+- One big breakthrough in my understanding of anchor boxes is that they are predicting offsets to the anchor boxes rather than directly predicting the bounding box coordinates.  
 
 
 Fully Convolutional Network 
