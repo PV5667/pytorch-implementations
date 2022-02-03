@@ -7,7 +7,7 @@ These consist of residual blocks that allow for deeper networks (sometimes with 
  - VGG16
  Another one of the classic CNNs.  
  - GoogLeNet
- Introduced Network in Network (NiN) modules for CNNs. Uses two auxiliary branches for predictions during training to combat gradient loss. During evaluation, only one branch is used.
+ Introduced Network in Network (NiN) modules for CNNs. Uses two auxiliary branches for predictions during training to combat gradient loss. During evaluation, only one branch is used. 
 
 # Upcoming
 GoogLeNet 
