@@ -6,7 +6,7 @@ These consist of residual blocks that allow for deeper networks (sometimes with 
  This network is one of the classic and seminal works in Convolutional Neural Networks.
  - VGG16
  Another one of the classic CNNs.  
- - GoogLeNet
+ - GoogLeNet 
  Introduced Network in Network (NiN) modules for CNNs. Uses two auxiliary branches for predictions during training to combat gradient loss. During evaluation, only one branch is used. 
 
 # Upcoming
