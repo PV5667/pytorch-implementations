@@ -12,13 +12,9 @@ class ResidualBlock(nn.Module):
     self.bn2 = nn.BatchNorm2d(output_channels[0])
     self.bn3 = nn.BatchNorm2d(output_channels[1])
   def forward(self, x):
-    #print(x.shape)
     y = F.relu(self.bn1(self.conv1(x)))
-    #print(y.shape)
     y = F.relu(self.bn2(self.conv2(y)))
-    #print(y.shape)
     y = self.conv3(y)
-    #print(y.shape)
     y = self.bn3(y)
     y += x
     y = F.relu(y)
@@ -38,13 +34,9 @@ class FirstResidualBlock(nn.Module):
     self.bn3 = nn.BatchNorm2d(output_channels[1])
     self.conv1x1 = nn.Conv2d(input_channels, output_channels[1], kernel_size = (1,1), stride = (1,1), bias = False)
   def forward(self, x):
-    #print(x.shape)
     y = F.relu(self.bn1(self.conv1(x)))
-    #print(y.shape)
     y = F.relu(self.bn2(self.conv2(y)))
-    #print(y.shape)
     y = self.conv3(y)
-    #print(y.shape)
     y = self.bn3(y)
     y = y + self.conv1x1(x)
     y = F.relu(y)
@@ -93,9 +85,7 @@ class Resnet50(nn.Module):
     x = self.conv5(x)
     print(x.shape)
     x = self.avgpool(x)
-    #print(x.shape)
     x = self.classifier(x)
-    #print(x.shape)
     return x
 
 net = Resnet50(1, 10)
