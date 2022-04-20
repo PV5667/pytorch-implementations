@@ -116,5 +116,5 @@ class UNet(nn.Module):
     level_1_right = UNet_Up_Block(self.up_channels[3], self.sizes[3], level_1_left, level_2_right)
 
     result = conv1x1(level_1_right.shape[1], self.num_classes)(level_1_right)
-    
+
     return result

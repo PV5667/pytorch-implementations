@@ -20,15 +20,10 @@ class Inception_Module(nn.Module):
 
     def forward(self, x):
         a = self.branch1(x)
-        #print("A: ", a.size())
         b = self.branch2(x)
-        #print("B: ", b.size())
         c = self.branch3(x)
-        #print("C: ", c.size())
         d = self.branch4(x)
-        #print("D: ", d.size())
         x = torch.cat([a, b, c, d], dim = 1)
-        #print(x.size())
         return x 
 
 
@@ -68,61 +63,48 @@ class GoogLeNet(nn.Module):
     def forward(self, x):
         x = self.conv_block1(x)
         x = self.inception3a(x)
-        #print(x.size())
-        
+
         x = self.inception3b(x)
-        #print(x.size())
-        
+    
         x = self.maxpool1(x)
-        print(x.size())
 
         x = self.inception4a(x)
-        print(x.size())
+
         # add pred branch 1 here
-        if self.training = True:
+        if self.training == True:
             pred1 = self.pred_branch1(x)
 
         x = self.inception4b(x)
-        print(x.size())
         
         x = self.inception4c(x)
-        print(x.size())
         
         x = self.inception4d(x)
-        print(x.size())
+  
         # add pred branch 2
-        if self.training = True:
+        if self.training == True:
             pred2 = self.pred_branch2(x)
         
         x = self.inception4e(x)
-        print(x.size())
-        
+
         x = self.maxpool2(x)
-        print(x.size())
-        
+
         x = self.inception5a(x)
         x = self.inception5b(x)
-        print(x.size())
         
         x = self.avgpool1(x)
-        print(x.size())
         
         x = self.dropout1(x)
-        print(x.size())
         
         x = self.flatten(x)
-        print(x.size())
         
         x = self.linear1(x)
         print(x.size())
-        if self.training = True:
+        if self.training == True:
             return pred1, pred2, x
         else:
             return x
 
         
-        
-#net = Inception_Module(256, [128, 128, 192, 32, 96, 64])
 
 net = GoogLeNet(3, 5)
 t = torch.randn(1, 3, 224, 224)

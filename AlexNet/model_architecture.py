@@ -24,25 +24,25 @@ class AlexNet(nn.Module):
     self.classifier = nn.Sequential( nn.Flatten(), nn.Linear(256*5*5, 10))
   def forward(self, x):
     x = F.relu(self.conv1(x))
-    print(x.shape)
+
     x = self.max_pool1(x)
-    print(x.shape)
+
     x = F.relu(self.conv2(x))
-    print(x.shape)
+
     x = self.max_pool2(x)
-    print(x.shape)
+
     x = F.relu(self.conv3(x))
-    print(x.shape)
+
     x = F.relu(self.conv4(x))
-    print(x.shape)
+
     x = F.relu(self.conv5(x))
-    print(x.shape)
+
     x = self.max_pool3(x)
-    print(x.shape)
+
     x = self.dropout(x)
-    print(x.shape)
+
     x = self.classifier(x)
-    print(x.shape)
+
     return x
 
 net = AlexNet(1, 10)
