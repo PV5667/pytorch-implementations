@@ -98,33 +98,23 @@ class UNet(nn.Module):
   def forward(self, x):
     print(x.shape)
     level_1_left = first_block(self.down_channels[0], x)
-    print(level_1_left.shape)
 
     level_2_left = UNet_Down_Block(self.down_channels[1], level_1_left)
-    print(level_2_left.shape)
 
     level_3_left = UNet_Down_Block(self.down_channels[2], level_2_left)
-    print(level_3_left.shape)
 
     level_4_left = UNet_Down_Block(self.down_channels[3], level_3_left)
-    print(level_4_left.shape)
 
     level_5 = UNet_Down_Block(self.down_channels[4], level_4_left)
-    print(level_5.shape)
 
     level_4_right = UNet_Up_Block(self.up_channels[0], self.sizes[0], level_4_left, level_5)
-    print(level_4_right.shape)
 
     level_3_right = UNet_Up_Block(self.up_channels[1], self.sizes[1], level_3_left, level_4_right)
-    print(level_3_right.shape)
 
     level_2_right = UNet_Up_Block(self.up_channels[2], self.sizes[2], level_2_left, level_3_right)
-    print(level_2_right.shape)
 
     level_1_right = UNet_Up_Block(self.up_channels[3], self.sizes[3], level_1_left, level_2_right)
-    print(level_1_right.shape)
 
     result = conv1x1(level_1_right.shape[1], self.num_classes)(level_1_right)
-    print(result.shape)
-
+    
     return result
